@@ -1,3 +1,6 @@
+mod utils;
+pub use utils::*;
+
 pub fn calculate_max_portion(portions: Vec<Vec<isize>>) -> isize {
     let mut max_calories = 0;
     for portion in portions {

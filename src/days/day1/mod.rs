@@ -1,5 +1,5 @@
-use crate::calories::{calculate_max_n_portions, calculate_max_portion};
-use crate::utils::{parse_portions, read_file};
+use crate::calories::{calculate_max_n_portions, calculate_max_portion, parse_portions};
+use crate::utils::read_file;
 
 pub fn day1a_solution(input_file_name: &String) {
     print!("Day 1a: ");

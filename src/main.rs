@@ -5,6 +5,9 @@ use rust_aoc_2022::*;
 struct CliArgs {
     #[arg(short, long)]
     day: Option<usize>,
+
+    #[arg(short, long)]
+    input: Option<usize>,
 }
 
 fn main() {
@@ -15,14 +18,23 @@ fn main() {
         println!("Day not mentioned");
         0
     };
+
+    let input = if let Some(input) = args.input {
+        input as i32
+    } else {
+        2
+    };
+
     match day {
         1 => {
-            let input_file_name = "src/days/day1/input_2.txt".to_string();
+            let input_file_name = format!("src/days/day1/inputs/input_{input}.txt");
             days::day1a_solution(&input_file_name);
             days::day1b_solution(&input_file_name);
         }
         2 => {
-            days::day2a_solution();
+            let input_file_name = format!("src/days/day2/inputs/input_{input}.txt");
+            days::day2a_solution(&input_file_name);
+            days::day2b_solution(&input_file_name);
         }
         other => {
             eprintln!("Day {other} not yet covered");
