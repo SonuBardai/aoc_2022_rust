@@ -1,3 +1,4 @@
+use super::items::get_priority;
 use super::Rucksack;
 
 #[derive(Debug)]
@@ -50,14 +51,62 @@ impl Group {
                 current_group.push(Rucksack::new(Some(rucksack.to_string())));
             }
         }
-        if current_group.is_empty() {
+        if !current_group.is_empty() {
             groups.push(current_group);
         }
         groups
     }
 
-    pub fn find_common_item(&self) -> char {
-        let (items1, items2, items3) = self.all_items();
-        todo!("Find common items in group of rucksacks")
+    pub fn find_common_items(&self) -> Vec<char> {
+        let (rucksack1, rucksack2, rucksack3) = self.all_items();
+        let mut common: Vec<char> = Vec::new();
+        for r1_char in rucksack1.chars() {
+            if Rucksack::bin_search(&rucksack2, &r1_char) && !common.contains(&r1_char) {
+                common.push(r1_char);
+            }
+        }
+        let mut final_common: Vec<char> = Vec::new();
+        for common_char in common.iter() {
+            if Rucksack::bin_search(&rucksack3, common_char) && !final_common.contains(&common_char)
+            {
+                final_common.push(*common_char);
+            }
+        }
+        final_common
     }
+
+    pub fn get_characters_priority(common_characters: &Vec<char>) -> isize {
+        let mut priority = 0;
+        for common in common_characters {
+            priority += get_priority(&common);
+        }
+        priority
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use itertools::Itertools;
+
+    use super::Group;
+
+    #[test]
+    fn test_group_rucksacks() {
+        let test_string = "a
+b
+c
+d
+e
+f"
+        .split("\n")
+        .collect_vec();
+        let groups = Group::group_rucksacks(test_string);
+        assert_eq!(groups.len(), 2);
+    }
+
+    #[test]
+    fn test_find_common_item() {}
+
+    #[test]
+    fn test_get_all_priorities() {}
 }

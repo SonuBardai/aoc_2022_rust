@@ -18,8 +18,8 @@ pub fn day3b_solution(input_file_contents: &str) {
     let mut total_priority: isize = 0;
     let groups = Group::group_rucksacks(rucksacks);
     for group in groups {
-        let common = group.find_common_item();
-        total_priority += get_priority(&common);
+        let common = group.find_common_items();
+        total_priority += Group::get_characters_priority(&common);
     }
     println!("Total priority of groups: {total_priority}");
 }
