@@ -6,7 +6,7 @@ pub fn day3a_solution(input_file_name: &str) {
     let mut total_priority: isize = 0;
     for items in get_all_values(&input_file_contents) {
         let rucksack = Rucksack::put_items(&items);
-        let common = rucksack.find_common_item();
+        let common = rucksack.find_common_items_optimized();
         total_priority += isize::try_from(get_priority(&common)).unwrap();
     }
     println!("Total priority of items in the rucksacks: {total_priority}");

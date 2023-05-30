@@ -55,12 +55,19 @@ impl Rucksack {
     }
 
     pub fn recursive_search(compartment: &str, item: &char) -> bool {
+        if compartment.len() <= 0 {
+            return false;
+        } else if compartment.len() == 1 {
+            if compartment.as_bytes()[0] == *item as u8 {
+                return true;
+            } else {
+                return false;
+            }
+        }
         let mid = compartment.len() / 2;
         let char_at_mid = compartment.as_bytes()[mid] as char;
         if char_at_mid == *item {
             true
-        } else if compartment.len() <= 1 {
-            false
         } else if (char_at_mid as u32) > (*item as u32) {
             return Rucksack::recursive_search(&compartment[0..mid], item);
         } else {
