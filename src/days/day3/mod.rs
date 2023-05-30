@@ -17,7 +17,6 @@ pub fn day3b_solution(input_file_contents: &str) {
     let rucksacks = get_all_values(&input_file_contents);
     let mut total_priority: isize = 0;
     let groups = Group::group_rucksacks(rucksacks);
-    println!("Groups: {:?}", groups);
     for group in groups {
         let common = group.find_common_item();
         total_priority += get_priority(&common);
