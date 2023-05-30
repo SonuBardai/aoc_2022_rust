@@ -36,6 +36,11 @@ fn main() {
             days::day2a_solution(&input_file_name);
             days::day2b_solution(&input_file_name);
         }
+        3 => {
+            let input_file_name = format!("src/days/day3/inputs/input_{input}.txt");
+            days::day3a_solution(&input_file_name);
+            days::day3b_solution(&input_file_name);
+        }
         other => {
             eprintln!("Day {other} not yet covered");
             // https://doc.rust-lang.org/std/macro.eprintln.html
