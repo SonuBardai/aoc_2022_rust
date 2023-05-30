@@ -19,6 +19,10 @@ impl Rucksack {
             },
         }
     }
+    
+    pub fn from(items: String) -> Rucksack {
+        Rucksack::put_items(&items)
+    }
 
     pub fn is_empty(&self) -> bool {
         self.compartment1.is_empty() && self.compartment2.is_empty()

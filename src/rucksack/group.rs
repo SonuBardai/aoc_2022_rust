@@ -17,6 +17,14 @@ impl Group {
         }
     }
 
+    pub fn from(rucksack1: String, rucksack2: String, rucksack3: String) -> Group {
+        Group {
+            rucksack1: Rucksack::new(Some(rucksack1)),
+            rucksack2: Rucksack::new(Some(rucksack2)),
+            rucksack3: Rucksack::new(Some(rucksack3)),
+        }
+    }
+
     pub fn push(&mut self, rucksack: Rucksack) {
         if self.rucksack1.is_empty() {
             self.rucksack1 = rucksack
@@ -88,25 +96,34 @@ impl Group {
 mod test {
     use itertools::Itertools;
 
+    use crate::rucksack::Rucksack;
+
     use super::Group;
 
     #[test]
     fn test_group_rucksacks() {
-        let test_string = "a
-b
-c
-d
-e
-f"
-        .split("\n")
-        .collect_vec();
+        let test_string = "a\nb\nc".split("\n").collect_vec();
+        let groups = Group::group_rucksacks(test_string);
+        assert_eq!(groups.len(), 1);
+
+        let test_string = "a\nb\nc\nd\ne\nf".split("\n").collect_vec();
         let groups = Group::group_rucksacks(test_string);
         assert_eq!(groups.len(), 2);
+
+        let test_string = "a\nb\nc\nd\ne\nf\ng\nh\ni".split("\n").collect_vec();
+        let groups = Group::group_rucksacks(test_string);
+        assert_eq!(groups.len(), 3);
     }
 
     #[test]
-    fn test_find_common_item() {}
-
-    #[test]
-    fn test_get_all_priorities() {}
+    fn test_find_common_item() {
+        let test_group = Group::from(
+            "rucksack1".to_string(),
+            "rucksack2".to_string(),
+            "rucksack3".to_string(),
+        );
+        let common = test_group.find_common_items();
+        let expect_common = vec!['r', 'u', 'c', 'k', 's', 'a'];
+        assert_eq!(common, expect_common);
+    }
 }
