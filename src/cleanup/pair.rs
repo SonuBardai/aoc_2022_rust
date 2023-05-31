@@ -12,10 +12,10 @@ impl Member {
     pub fn set(&mut self, min: &str, max: &str) {
         self.min = min
             .parse::<isize>()
-            .expect(&format!("Failed to parse min {min}"));
+            .unwrap_or_else(|_| panic!("Failed to parse min {min}"));
         self.max = max
             .parse::<isize>()
-            .expect(&format!("Failed to parse max {max}"));
+            .unwrap_or_else(|_| panic!("Failed to parse max {max}"));
     }
 
     pub fn populate(&mut self, items: Vec<&str>) {
