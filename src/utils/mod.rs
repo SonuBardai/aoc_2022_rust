@@ -10,7 +10,6 @@ pub fn read_file(input_file_name: &String) -> String {
     }
 }
 
-
 pub fn get_all_values(string_input: &str) -> Vec<&str> {
     string_input.split('\n').collect()
 }
