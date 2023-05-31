@@ -9,7 +9,7 @@ use crate::utils::get_all_values;
 use std::fmt::Error;
 
 pub fn calculate_total_score(
-    rounds: &String,
+    rounds: &str,
     extract_from_col2: fn(&str) -> Result<(Player, Player), Error>,
 ) -> isize {
     let mut you_points: isize = 0;

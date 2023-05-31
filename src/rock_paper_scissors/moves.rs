@@ -37,7 +37,7 @@ impl Move {
             (Move::Paper, Outcome::Win) => Move::Scissors,
             (Move::Scissors, Outcome::Lose) => Move::Paper,
             (Move::Scissors, Outcome::Win) => Move::Rock,
-            (_other, Outcome::Draw) => self.clone(),
+            (_other, Outcome::Draw) => *self,
         }
     }
 

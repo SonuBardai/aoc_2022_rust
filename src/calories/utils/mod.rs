@@ -1,8 +1,8 @@
-pub fn parse_portions(read_lines: &String) -> Vec<Vec<isize>> {
+pub fn parse_portions(read_lines: &str) -> Vec<Vec<isize>> {
     let elf_portions = read_lines.split("\n\n").collect::<Vec<&str>>();
     let mut parsed_portions: Vec<Vec<isize>> = Vec::new();
     for elf_portion in elf_portions {
-        let calories = elf_portion.split("\n").collect::<Vec<&str>>();
+        let calories = elf_portion.split('\n').collect::<Vec<&str>>();
         let mut parsed_calories: Vec<isize> = Vec::new();
         for calorie in calories {
             match calorie.parse::<isize>() {
@@ -17,5 +17,5 @@ pub fn parse_portions(read_lines: &String) -> Vec<Vec<isize>> {
         }
         parsed_portions.push(parsed_calories);
     }
-    return parsed_portions;
+    parsed_portions
 }

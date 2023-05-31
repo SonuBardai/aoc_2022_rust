@@ -59,14 +59,10 @@ impl Rucksack {
     }
 
     pub fn recursive_search(compartment: &str, item: &char) -> bool {
-        if compartment.len() <= 0 {
+        if compartment.is_empty() {
             return false;
         } else if compartment.len() == 1 {
-            if compartment.as_bytes()[0] == *item as u8 {
-                return true;
-            } else {
-                return false;
-            }
+            return compartment.as_bytes()[0] == *item as u8
         }
         let mid = compartment.len() / 2;
         let char_at_mid = compartment.as_bytes()[mid] as char;
@@ -116,35 +112,28 @@ mod tests {
     #[test]
     fn test_bin_search() {
         let test_rucksack = Rucksack::put_items("agAdlMjpfP");
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'A'),
-            true
+        assert!(
+            Rucksack::bin_search(&test_rucksack.compartment1, &'A')
         );
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment2, &'A'),
-            false
+        assert!(
+            !Rucksack::bin_search(&test_rucksack.compartment2, &'A')
         );
         let test_rucksack =
             Rucksack::put_items("CgmewIYIMTEwRJoTwPKAgAEjvxUjZrPhpkpWqvQNuwnEtySETxtuSfphuulj");
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'g'),
-            true
+        assert!(
+            Rucksack::bin_search(&test_rucksack.compartment1, &'g')
         );
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'Q'),
-            false
+        assert!(
+            !Rucksack::bin_search(&test_rucksack.compartment1, &'Q')
         );
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'U'),
-            true
+        assert!(
+            Rucksack::bin_search(&test_rucksack.compartment1, &'U')
         );
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment2, &'a'),
-            false
+        assert!(
+            !Rucksack::bin_search(&test_rucksack.compartment2, &'a')
         );
-        assert_eq!(
-            Rucksack::bin_search(&test_rucksack.compartment2, &'h'),
-            true
+        assert!(
+            Rucksack::bin_search(&test_rucksack.compartment2, &'h')
         );
     }
 }

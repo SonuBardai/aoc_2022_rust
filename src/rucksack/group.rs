@@ -40,11 +40,11 @@ impl Group {
     }
 
     pub fn all_items(&self) -> (String, String, String) {
-        return (
+        (
             self.rucksack1.combined_compartments(),
             self.rucksack2.combined_compartments(),
             self.rucksack3.combined_compartments(),
-        );
+        )
     }
 
     pub fn group_rucksacks(rucksacks: Vec<&str>) -> Vec<Group> {
@@ -75,7 +75,7 @@ impl Group {
         }
         let mut final_common: Vec<char> = Vec::new();
         for common_char in common.iter() {
-            if Rucksack::bin_search(&rucksack3, common_char) && !final_common.contains(&common_char)
+            if Rucksack::bin_search(&rucksack3, common_char) && !final_common.contains(common_char)
             {
                 final_common.push(*common_char);
             }
@@ -86,9 +86,15 @@ impl Group {
     pub fn get_characters_priority(common_characters: &Vec<char>) -> isize {
         let mut priority = 0;
         for common in common_characters {
-            priority += get_priority(&common);
+            priority += get_priority(common);
         }
         priority
+    }
+}
+
+impl Default for Group {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -96,21 +102,19 @@ impl Group {
 mod test {
     use itertools::Itertools;
 
-    use crate::rucksack::Rucksack;
-
     use super::Group;
 
     #[test]
     fn test_group_rucksacks() {
-        let test_string = "a\nb\nc".split("\n").collect_vec();
+        let test_string = "a\nb\nc".split('\n').collect_vec();
         let groups = Group::group_rucksacks(test_string);
         assert_eq!(groups.len(), 1);
 
-        let test_string = "a\nb\nc\nd\ne\nf".split("\n").collect_vec();
+        let test_string = "a\nb\nc\nd\ne\nf".split('\n').collect_vec();
         let groups = Group::group_rucksacks(test_string);
         assert_eq!(groups.len(), 2);
 
-        let test_string = "a\nb\nc\nd\ne\nf\ng\nh\ni".split("\n").collect_vec();
+        let test_string = "a\nb\nc\nd\ne\nf\ng\nh\ni".split('\n').collect_vec();
         let groups = Group::group_rucksacks(test_string);
         assert_eq!(groups.len(), 3);
     }

@@ -9,7 +9,7 @@ pub fn calculate_max_portion(portions: Vec<Vec<isize>>) -> isize {
             max_calories = cur_calories;
         }
     }
-    return max_calories;
+    max_calories
 }
 
 pub fn calculate_max_n_portions(portions: Vec<Vec<isize>>, n: usize) -> Vec<isize> {

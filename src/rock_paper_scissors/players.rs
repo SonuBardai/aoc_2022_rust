@@ -22,7 +22,7 @@ impl Player {
     }
 
     pub fn extract_players(round: &str) -> Result<(Player, Player), Error> {
-        let players = round.split(" ").collect::<Vec<&str>>();
+        let players = round.split(' ').collect::<Vec<&str>>();
         if let (Ok(opponent), Ok(you)) = (
             Player::extract_player(players[0]),
             Player::extract_player(players[1]),
@@ -35,14 +35,12 @@ impl Player {
 
     pub fn extract_players_from_outcome(round: &str) -> Result<(Player, Player), Error> {
         let (opponent_move, outcome) =
-            if let [opponent_move, outcome] = round.split(" ").collect::<Vec<&str>>()[..] {
+            if let [opponent_move, outcome] = round.split(' ').collect::<Vec<&str>>()[..] {
                 (opponent_move, outcome)
             } else {
                 panic!("Invalid round received {round}. Cannot extract player and outcome.");
             };
-        let opponent = Player::extract_player(opponent_move).expect(&format!(
-            "Failed to extract player from move {opponent_move}"
-        ));
+        let opponent = Player::extract_player(opponent_move).unwrap_or_else(|_| panic!("Failed to extract player from move {opponent_move}"));
         let outcome = Outcome::match_outcome(outcome);
         let you_move = opponent.player_move.match_move_from_outcome(&outcome);
         let you = Player {
