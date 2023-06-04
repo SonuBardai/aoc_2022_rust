@@ -40,7 +40,8 @@ impl Player {
             } else {
                 panic!("Invalid round received {round}. Cannot extract player and outcome.");
             };
-        let opponent = Player::extract_player(opponent_move).unwrap_or_else(|_| panic!("Failed to extract player from move {opponent_move}"));
+        let opponent = Player::extract_player(opponent_move)
+            .unwrap_or_else(|_| panic!("Failed to extract player from move {opponent_move}"));
         let outcome = Outcome::match_outcome(outcome);
         let you_move = opponent.player_move.match_move_from_outcome(&outcome);
         let you = Player {

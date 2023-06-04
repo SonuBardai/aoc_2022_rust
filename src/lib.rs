@@ -13,3 +13,6 @@ pub mod rucksack;
 
 // day4
 pub mod cleanup;
+
+// day5
+pub mod crane;

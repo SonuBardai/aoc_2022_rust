@@ -46,6 +46,21 @@ fn main() {
             days::day4a_solution(&input_file_name);
             days::day4b_solution(&input_file_name);
         }
+        5 => {
+            let input_file_content = match input {
+                1 => {
+                    include_str!("days/day5/inputs/input_1.txt")
+                }
+                2 => {
+                    include_str!("days/day5/inputs/input_2.txt")
+                }
+                _other => {
+                    panic!("Input file not found");
+                }
+            };
+            days::day5a_solution(input_file_content);
+            days::day5b_solution(input_file_content);
+        }
         other => {
             eprintln!("Day {other} not yet covered");
             // https://doc.rust-lang.org/std/macro.eprintln.html

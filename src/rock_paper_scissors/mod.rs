@@ -4,7 +4,7 @@ pub mod outcome;
 pub mod players;
 use players::Player;
 
-use self::game::{calculate_game_points};
+use self::game::calculate_game_points;
 use crate::utils::get_all_values;
 use std::fmt::Error;
 

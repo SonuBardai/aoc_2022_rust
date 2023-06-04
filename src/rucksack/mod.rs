@@ -19,7 +19,7 @@ impl Rucksack {
             },
         }
     }
-    
+
     pub fn from(items: String) -> Rucksack {
         Rucksack::put_items(&items)
     }
@@ -62,7 +62,7 @@ impl Rucksack {
         if compartment.is_empty() {
             return false;
         } else if compartment.len() == 1 {
-            return compartment.as_bytes()[0] == *item as u8
+            return compartment.as_bytes()[0] == *item as u8;
         }
         let mid = compartment.len() / 2;
         let char_at_mid = compartment.as_bytes()[mid] as char;
@@ -112,28 +112,14 @@ mod tests {
     #[test]
     fn test_bin_search() {
         let test_rucksack = Rucksack::put_items("agAdlMjpfP");
-        assert!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'A')
-        );
-        assert!(
-            !Rucksack::bin_search(&test_rucksack.compartment2, &'A')
-        );
+        assert!(Rucksack::bin_search(&test_rucksack.compartment1, &'A'));
+        assert!(!Rucksack::bin_search(&test_rucksack.compartment2, &'A'));
         let test_rucksack =
             Rucksack::put_items("CgmewIYIMTEwRJoTwPKAgAEjvxUjZrPhpkpWqvQNuwnEtySETxtuSfphuulj");
-        assert!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'g')
-        );
-        assert!(
-            !Rucksack::bin_search(&test_rucksack.compartment1, &'Q')
-        );
-        assert!(
-            Rucksack::bin_search(&test_rucksack.compartment1, &'U')
-        );
-        assert!(
-            !Rucksack::bin_search(&test_rucksack.compartment2, &'a')
-        );
-        assert!(
-            Rucksack::bin_search(&test_rucksack.compartment2, &'h')
-        );
+        assert!(Rucksack::bin_search(&test_rucksack.compartment1, &'g'));
+        assert!(!Rucksack::bin_search(&test_rucksack.compartment1, &'Q'));
+        assert!(Rucksack::bin_search(&test_rucksack.compartment1, &'U'));
+        assert!(!Rucksack::bin_search(&test_rucksack.compartment2, &'a'));
+        assert!(Rucksack::bin_search(&test_rucksack.compartment2, &'h'));
     }
 }
