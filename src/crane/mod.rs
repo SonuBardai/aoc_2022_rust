@@ -6,12 +6,25 @@ pub struct Move {
 }
 
 impl Move {
-    pub fn act(stacks: &mut Vec<Vec<char>>, move_item: &Move) {
+    pub fn crane_9000(stacks: &mut Vec<Vec<char>>, move_item: &Move) {
         for _ in 0..move_item.count {
             if let Some(moved) = stacks[move_item.from - 1].pop() {
                 stacks[move_item.to - 1].push(moved);
             };
         }
+    }
+
+    pub fn crane_9001(stacks: &mut Vec<Vec<char>>, move_item: &Move) {
+        let mut crates_moved: Vec<char> = vec![];
+        for _ in 0..move_item.count {
+            crates_moved.push(
+                stacks[move_item.from - 1]
+                    .pop()
+                    .unwrap_or_else(|| panic!("Failed")),
+            );
+        }
+        crates_moved.reverse();
+        stacks[move_item.to - 1].extend_from_slice(&crates_moved)
     }
 
     fn parse_moves(move_item: &str) -> Move {
