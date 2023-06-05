@@ -103,7 +103,7 @@ mod test {
         }];
         let mut stacks = vec![vec!['A', 'B', 'C'], vec![]];
         for move_item in moves {
-            Move::act(&mut stacks, &move_item);
+            Move::crane_9000(&mut stacks, &move_item);
         }
         let expected_stacks = vec![vec![], vec!['C', 'B', 'A']];
         assert_eq!(stacks, expected_stacks);

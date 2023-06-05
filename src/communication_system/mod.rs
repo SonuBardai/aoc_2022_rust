@@ -1,10 +1,40 @@
-pub fn start_of_packet_marker(input_stream: &str) -> i32 {
-    todo!()
+pub trait CommunicationSystem {
+    fn get_packet_marker(&self, window_length: usize) -> usize;
+}
+
+impl CommunicationSystem for String {
+    fn get_packet_marker(&self, window_length: usize) -> usize {
+        let mut window: Vec<char> = vec![];
+        for (index, item) in self.chars().enumerate() {
+            if !window.contains(&item) {
+                window.push(item);
+                if window.len() == window_length {
+                    println!("window: {window:?}");
+                    return index + 1;
+                }
+            } else {
+                let existing_item = window.iter().position(|&i| i == item).unwrap();
+                window = window[existing_item + 1..window.len()].to_vec();
+                window.push(item);
+            }
+        }
+        0
+    }
+}
+
+pub fn start_of_packet_marker(input_stream: String) -> i32 {
+    input_stream.get_packet_marker(4) as i32
+}
+
+pub fn start_of_message_marker(input_stream: String) -> i32 {
+    input_stream.get_packet_marker(14) as i32
 }
 
 #[cfg(test)]
 mod test {
     use std::collections::HashMap;
+
+    use crate::communication_system::start_of_message_marker;
 
     use super::start_of_packet_marker;
 
@@ -18,7 +48,25 @@ mod test {
             ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11),
         ]);
         for (test_case, expected) in test_cases {
-            assert_eq!(start_of_packet_marker(test_case), expected);
+            println!("Testing string {test_case:?}");
+            assert_eq!(start_of_packet_marker(test_case.to_string()), expected);
+            println!("Passed: {test_case:?}");
+        }
+    }
+
+    #[test]
+    fn test_start_of_message_marker() {
+        let test_cases = HashMap::from([
+            ("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19),
+            ("bvwbjplbgvbhsrlpgdmjqwftvncz", 23),
+            ("nppdvjthqldpwncqszvftbrmjlhg", 23),
+            ("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29),
+            ("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26),
+        ]);
+        for (test_case, expected) in test_cases {
+            println!("Testing string {test_case:?}");
+            assert_eq!(start_of_message_marker(test_case.to_string()), expected);
+            println!("Passed: {test_case:?}");
         }
     }
 }
