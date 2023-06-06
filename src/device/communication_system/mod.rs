@@ -1,5 +1,6 @@
 pub trait CommunicationSystem {
     fn get_packet_marker(&self, window_length: usize) -> usize;
+    fn get_packet_marker_dequeue(&self, window_length: usize) -> usize;
 }
 
 impl CommunicationSystem for String {
@@ -20,23 +21,35 @@ impl CommunicationSystem for String {
         }
         0
     }
+
+    fn get_packet_marker_dequeue(&self, window_length: usize) -> usize {
+        let mut window = std::collections::VecDeque::<char>::new();
+        for (index, item) in self.chars().enumerate() {
+            while window.contains(&item) {
+                window.pop_back();
+            }
+            window.push_front(item);
+            if window.len() == window_length {
+                return index + 1;
+            }
+        }
+        0
+    }
 }
 
 pub fn start_of_packet_marker(input_stream: String) -> i32 {
-    input_stream.get_packet_marker(4) as i32
+    input_stream.get_packet_marker_dequeue(4) as i32
 }
 
 pub fn start_of_message_marker(input_stream: String) -> i32 {
-    input_stream.get_packet_marker(14) as i32
+    input_stream.get_packet_marker_dequeue(14) as i32
 }
 
 #[cfg(test)]
 mod test {
     use std::collections::HashMap;
 
-    use crate::communication_system::start_of_message_marker;
-
-    use super::start_of_packet_marker;
+    use super::{start_of_message_marker, start_of_packet_marker};
 
     #[test]
     fn test_start_of_packet_marker() {

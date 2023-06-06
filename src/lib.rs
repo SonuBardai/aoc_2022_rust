@@ -17,5 +17,6 @@ pub mod cleanup;
 // day5
 pub mod crane;
 
-// day 6
-pub mod communication_system;
+// day 6 communication_system
+// day 7 file_system
+pub mod device;
