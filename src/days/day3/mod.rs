@@ -2,7 +2,7 @@ use crate::rucksack::{group::Group, items::get_priority, Rucksack};
 use crate::utils::{get_all_values, read_file};
 
 pub fn day3a_solution(input_file_name: &str) {
-    let input_file_contents = read_file(&input_file_name.to_string());
+    let input_file_contents = read_file(input_file_name);
     let mut total_priority: isize = 0;
     for items in get_all_values(&input_file_contents) {
         let rucksack = Rucksack::put_items(items);
@@ -13,7 +13,7 @@ pub fn day3a_solution(input_file_name: &str) {
 }
 
 pub fn day3b_solution(input_file_contents: &str) {
-    let input_file_contents = read_file(&input_file_contents.to_string());
+    let input_file_contents = read_file(input_file_contents);
     let rucksacks = get_all_values(&input_file_contents);
     let mut total_priority: isize = 0;
     let groups = Group::group_rucksacks(rucksacks);

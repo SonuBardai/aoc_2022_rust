@@ -36,9 +36,9 @@ impl Move {
             }
         });
         Move {
-            count: digits[0] as usize,
-            from: digits[1] as usize,
-            to: digits[2] as usize,
+            count: digits[0],
+            from: digits[1],
+            to: digits[2],
         }
     }
 
@@ -65,7 +65,6 @@ pub fn parse_cargo(raw_input: &str) -> (Vec<Vec<char>>, Vec<Move>) {
             if index != 0 {
                 layer
                     .chars()
-                    .into_iter()
                     .skip(1)
                     .step_by(4)
                     .enumerate()
@@ -76,10 +75,8 @@ pub fn parse_cargo(raw_input: &str) -> (Vec<Vec<char>>, Vec<Move>) {
                             } else {
                                 stacks.push(vec![]);
                             }
-                        } else {
-                            if c != ' ' {
-                                stacks[i].push(c);
-                            }
+                        } else if c != ' ' {
+                            stacks[i].push(c);
                         }
                     });
             }

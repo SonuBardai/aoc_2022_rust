@@ -63,8 +63,8 @@ fn main() {
         }
         6 => {
             let input_file_content = include_str!("days/day6/inputs/input_1.txt");
-            days::day6a_solution(&input_file_content);
-            days::day6b_solution(&input_file_content);
+            days::day6a_solution(input_file_content);
+            days::day6b_solution(input_file_content);
         }
         7 => {
             let input_file_name = format!("src/days/day4/inputs/input_{input}.txt");
