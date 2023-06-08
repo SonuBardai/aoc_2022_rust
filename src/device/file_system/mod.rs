@@ -28,7 +28,7 @@ impl Directory {
         }
     }
 
-    pub fn calculate_total_sizes(directories: &Vec<Directory>) -> HashMap<&String, u32> {
+    pub fn calculate_total_sizes(directories: &[Directory]) -> HashMap<&String, u32> {
         let mut directory_sizes = std::collections::HashMap::new();
         directories.iter().for_each(|dir| {
             let sub_dirs: Vec<&Directory> = directories
@@ -36,10 +36,7 @@ impl Directory {
                 .rev()
                 .filter(|remaining_dir| dir.sub_dir.contains(&remaining_dir.dir_name))
                 .collect();
-            let total_size: u32 = sub_dirs
-                .iter()
-                .map(|sub_dir| sub_dir.total_size.clone())
-                .sum();
+            let total_size: u32 = sub_dirs.iter().map(|sub_dir| sub_dir.total_size).sum();
             directory_sizes.insert(&dir.dir_name, total_size);
         });
         directory_sizes
@@ -54,17 +51,15 @@ pub fn parse_commands(raw_input: &str) {
             return;
         } else if command.contains("$ cd ") {
             directories.push(Directory::from(command));
+        } else if command.contains("dir ") {
+            directories
+                .last_mut()
+                .unwrap()
+                .sub_dir
+                .push(Directory::dir_name(command));
         } else {
-            if command.contains("dir ") {
-                directories
-                    .last_mut()
-                    .unwrap()
-                    .sub_dir
-                    .push(Directory::dir_name(command));
-            } else {
-                directories.last_mut().unwrap().files_size += Directory::file_size(command);
-            }
+            directories.last_mut().unwrap().files_size += Directory::file_size(command);
         }
-        let total_sizes = Directory::calculate_total_sizes(&directories);
+        let _total_sizes = Directory::calculate_total_sizes(&directories);
     });
 }
