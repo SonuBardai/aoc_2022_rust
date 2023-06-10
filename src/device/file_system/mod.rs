@@ -1,65 +1,76 @@
-use std::collections::HashMap;
+pub mod file;
 
-#[derive(Debug, Clone)]
-struct Directory {
+use file::{Commands, FileSystem};
+
+pub struct StackItem {
     dir_name: String,
-    files_size: u32,
-    sub_dir: Vec<String>,
     total_size: u32,
 }
+pub struct Stack(Vec<StackItem>);
 
-impl Directory {
-    pub fn dir_name(command: &str) -> String {
-        let pwd = command.split(' ').collect::<Vec<&str>>();
-        pwd[pwd.len() - 1].to_string()
-    }
+#[derive(Debug)]
+pub enum Terminal {
+    Input(Commands),
+    Output(FileSystem),
+}
 
-    pub fn file_size(command: &str) -> u32 {
-        let file_size = command.split(' ').collect::<Vec<&str>>();
-        file_size[0].parse().unwrap()
-    }
-
-    pub fn from(command: &str) -> Self {
-        Directory {
-            dir_name: Self::dir_name(command),
-            files_size: 0,
-            sub_dir: vec![],
-            total_size: 0,
+impl Terminal {
+    pub fn tokenize(terminal_item: &str) -> Terminal {
+        if terminal_item.contains("$ cd ") {
+            if terminal_item.contains("..") {
+                Terminal::Input(Commands::ChangeDirUp)
+            } else {
+                Terminal::Input(Commands::ChangeDir(
+                    terminal_item
+                        .strip_prefix("$ cd ")
+                        .unwrap_or_else(|| panic!("Failed to get dir name from cd command"))
+                        .to_string(),
+                ))
+            }
+        } else if terminal_item.contains("$ ls") {
+            Terminal::Input(Commands::List)
+        } else if terminal_item.contains("dir ") {
+            let path = terminal_item
+                .strip_prefix("dir ")
+                .expect("Failed to get dir name");
+            Terminal::Output(FileSystem::new_directory(path))
+        } else {
+            let (size, path) = terminal_item
+                .split_once(' ')
+                .expect(&format!("Failed to get file info from {terminal_item}"));
+            Terminal::Output(FileSystem::new_file(
+                path,
+                size.parse::<u32>().expect(&format!(
+                    "Failed to parse file size for command {terminal_item}"
+                )),
+            ))
         }
     }
 
-    pub fn calculate_total_sizes(directories: &[Directory]) -> HashMap<&String, u32> {
-        let mut directory_sizes = std::collections::HashMap::new();
-        directories.iter().for_each(|dir| {
-            let sub_dirs: Vec<&Directory> = directories
-                .iter()
-                .rev()
-                .filter(|remaining_dir| dir.sub_dir.contains(&remaining_dir.dir_name))
-                .collect();
-            let total_size: u32 = sub_dirs.iter().map(|sub_dir| sub_dir.total_size).sum();
-            directory_sizes.insert(&dir.dir_name, total_size);
-        });
-        directory_sizes
+    pub fn parse_terminal(terminal_data: &str) -> Vec<Terminal> {
+        terminal_data
+            .split('\n')
+            .filter(|line| !line.is_empty())
+            .into_iter()
+            .map(|command| Self::tokenize(command))
+            .collect::<Vec<Terminal>>()
     }
 }
 
-// DOES NOT WORK
-pub fn parse_commands(raw_input: &str) {
-    let mut directories: Vec<Directory> = Vec::new();
-    raw_input.split('\n').for_each(|command| {
-        if command.contains("$ ls") || command.is_empty() || command.contains("$ cd ..") {
-            return;
-        } else if command.contains("$ cd ") {
-            directories.push(Directory::from(command));
-        } else if command.contains("dir ") {
-            directories
-                .last_mut()
-                .unwrap()
-                .sub_dir
-                .push(Directory::dir_name(command));
-        } else {
-            directories.last_mut().unwrap().files_size += Directory::file_size(command);
+pub fn delete_directories(input_content: &str, _size_threshold: u32) {
+    let stack = Stack(vec![]);
+    let commands = Terminal::parse_terminal(input_content);
+    commands.iter().map(|command| match command {
+        Terminal::Input(command) => {
+            todo!()
         }
-        let _total_sizes = Directory::calculate_total_sizes(&directories);
+        Terminal::Output(command) => match command {
+            FileSystem::Directory(dir) => {
+                todo!()
+            }
+            FileSystem::File(file) => {
+                todo!()
+            }
+        },
     });
 }
